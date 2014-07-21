@@ -67,7 +67,11 @@
 
 #changelist table tbody td, #changelist table tbody th {
     border-left: 1px solid #ddd;
+<<<<<<< HEAD
     /*text-align:right;*/
+=======
+    text-align:right;
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 }
 
 #changelist table tbody td:first-child, #changelist table tbody th:first-child {

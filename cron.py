@@ -8,6 +8,21 @@ from datetime import datetime
 from Invoices.models import Email, EmailNotification
 from Invoices.models import Email, EmailNotification, period, PeriodClose, paymentEntities, Soci, SalesInvoice, PurchaseInvoice, periodTaxes
 
+<<<<<<< HEAD
+=======
+
+class testBot(CronJobBase):
+	RUN_EVERY_MINS = 0 # every 1 min
+
+	schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
+	code = 'TestEmailsCron' # a unique code
+
+	def do(self):
+		from Invoices.bots import bot_period_manager
+		bot = bot_period_manager()
+		bot.render()
+
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 """
   Not tested code, runcrons to exect it.
 """
@@ -129,7 +144,11 @@ class PeriodCloseAutomaticClose( CronJobBase ):
 			#For each cooper
 			a = 0
 			for ob_cooper in Soci.objects.filter(user__is_superuser=False):
+<<<<<<< HEAD
 				
+=======
+
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 				if not PeriodClose.objects.filter(period=ob_period, user=ob_cooper.user):
 					a = a + 1
 					print "cooper: "  
@@ -195,8 +214,12 @@ class PeriodCloseAutomaticClose( CronJobBase ):
 					print " Going to save..."
 					ob_PeriodClose.save()
 					print " saved!"
+<<<<<<< HEAD
 			print "ss"
 			print a
+=======
+
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 #execute and see log --> python manage.py runcrons 
 #see register created in http://localhost:8080/admin/django_cron/cronjoblog/     Code = EmailsNotifierCron
 

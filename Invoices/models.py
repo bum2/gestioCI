@@ -56,12 +56,15 @@ class periodTaxes(models.Model):
 	min_base = models.IntegerField(verbose_name= _(u"Base imposable Mínima"))
 	max_base = models.IntegerField(verbose_name= _(u"Base imposable Màxima"))
 
+<<<<<<< HEAD
 	def __unicode__(self):
 		return self.taxId
 
 	def __getitem__(self, value):
 		return value
 
+=======
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 	class Meta:
 		verbose_name = _(u'A - Taula quotes')
 		verbose_name_plural = _(u'A - Taula quotes')
@@ -95,6 +98,10 @@ class Soci(models.Model):
 	def email( self ):
 		return self.user.email
 	email.short_description = _(u"Email")
+<<<<<<< HEAD
+=======
+
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 	class Meta:
 		verbose_name= _(u'E - Soci')
 		verbose_name_plural= _(u'E - Socis')
@@ -169,11 +176,19 @@ class paymentEntities(models.Model):
 
 
 class period(models.Model):
+<<<<<<< HEAD
 	label = models.CharField(verbose_name=_(u"Títol"), unique=True, max_length=200)
 	first_day = models.DateField(verbose_name=_(u"Inici"), help_text=_(u"Primer dia del període"))
 	date_open = models.DateField(verbose_name=_(u"Obert"))
 	date_close = models.DateField(verbose_name=_(u"Tancat"))
 
+=======
+	label = models.CharField(verbose_name=_(u"Títol"), max_length=200)
+	first_day = models.DateField(verbose_name=_(u"Inici"), help_text=_(u"Primer dia del període"))
+	date_open = models.DateField(verbose_name=_(u"Obert"))
+	date_close = models.DateField(verbose_name=_(u"Tancat"))
+	exported = models.BooleanField (verbose_name=_("Exported"), help_text=_("exported and archived after closing"), default=False)
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 	def period(self):
 		return ('%s %s') % (self.label, self.first_day.year)
 
@@ -418,7 +433,11 @@ class PeriodClose(models.Model):
 	period = models.ForeignKey(period, verbose_name=_(u'Trimestre'), blank=True)
 	user = models.ForeignKey(User, null=True, blank=True, verbose_name=_(u"nº COOP"))
 	closed = models.BooleanField (verbose_name=_("closed"), help_text=_("closed_help_text"), default=False)
+<<<<<<< HEAD
 
+=======
+	bot_closed = models.BooleanField (verbose_name=_("admin closed"), help_text=_("closed by bot after expiring time"), default=False)
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 	#SALES
 	Sales_total = models.DecimalField(verbose_name=_(u"Base Imposable Emeses (€)"), decimal_places=2, max_digits=10, blank=True)
 	Sales_invoicedVAT = models.DecimalField(verbose_name=_(u"IVA Facturat (€)"), decimal_places=2, max_digits=10, blank=True)

@@ -26,11 +26,19 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 '''
 
 
+<<<<<<< HEAD
 '''
 1 Global vars
 '''
 # SECURITY WARNING: Keep the secret key used in production secret!
 SECRET_KEY = 'znh%e(fdnb@haock=go-a+eej*pgt(u=#b_o!0f08v53+rn1j*'
+=======
+''' 
+1 Global vars
+'''
+# SECURITY WARNING: Keep the secret key used in production secret!
+SECRET_KEY = 'sdf%e(ertb@hertk=t&%aEEEj*pgt(u=#b_654f08v53SDe1j*'
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -52,17 +60,24 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 	#gestioCI APPS
     'Invoices', 	# This is gestioCI block1 Selfoccupated coopers APP
+<<<<<<< HEAD
 	   'Cooper', 		# This is gestioCI block1 Selfoccupated coopers APP
      'General',  # This is the general models APP including five main types of data
+=======
+	'Cooper', 		# This is gestioCI block1 Selfoccupated coopers APP
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 	#common APPS
     'south', 		# This is command line BBDD helper
     'django_cron', 	# This controls scheduled EmailNotifications https://pypi.python.org/pypi/django-cron
     'csvimport', 	# This provides import CSV to Model https://pypi.python.org/pypi/django-csvimport
     'localflavor', 	# This provide NIF/NIE/CIF form field
+<<<<<<< HEAD
     'mptt', # This provide Tree management in a 'nested set' style
     #'feincms',
     #'feincms.module.page',
     #'feincms.module.medialibrary'
+=======
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 )
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -104,7 +119,11 @@ DATABASES = {
 4 Custom plugins config
 '''
 #django-csvimport
+<<<<<<< HEAD
 CSVIMPORT_MODELS = ["Invoices.periodTaxes",
+=======
+CSVIMPORT_MODELS = ["Invoices.periodTaxes", 
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 		"Invoices.SalesInvoices",
 		"Invoices.PurchaseInvoices",
 		"Invoices.PeriodClose",
@@ -117,10 +136,17 @@ CSVIMPORT_MODELS = ["Invoices.periodTaxes",
 
 #django-cron
 CRON_CLASSES = [
+<<<<<<< HEAD
     "cron.testEmail",
     "cron.EmailsNotifierCron",
     "cron.PeriodCloseAutomaticClose"
 ]
+=======
+    "cron.testBot",
+    "cron.EmailsNotifierCron",
+    "cron.PeriodCloseAutomaticClose"
+] 
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 CRONJOBS = [
     ('*/1 * * * *', 'Config.cron')
 ]
@@ -145,6 +171,7 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 # b) for DEVELOPMENT
 STATIC_URL = '/static/'
+<<<<<<< HEAD
 ADMIN_MEDIA_PREFIX = STATIC_ROOT + '/admin/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "templates"),
@@ -154,6 +181,15 @@ STATICFILES_DIRS = (
 
 
 '''
+=======
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "templates"),
+		BASE_DIR + '/Invoices/templates/',
+)
+
+
+''' 
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 6 Localization
 '''
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -176,10 +212,17 @@ USE_TZ = True
 7 EMail
 '''
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+<<<<<<< HEAD
 EMAIL_HOST = "------"
 EMAIL_HOST_USER = "------"
 EMAIL_HOST_PASSWORD = "------"
 DEFAULT_FROM_EMAIL = "------"
+=======
+EMAIL_HOST = "mail.cooperativaintegral.cat"
+EMAIL_HOST_USER = "gestioci@cooperativa.cat" 
+EMAIL_HOST_PASSWORD = "0¡salud Y libertad!"
+DEFAULT_FROM_EMAIL = "gestioci@cooperativa.cat"
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 
 #Opción 1
 EMAIL_PORT = 587
@@ -195,3 +238,9 @@ EMAIL_USE_TLS = False
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 #EMAIL_USE_SSL = False
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09

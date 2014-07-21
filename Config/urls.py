@@ -13,7 +13,11 @@ admin.autodiscover()
 
 
 #URL PARAMETERS
+<<<<<<< HEAD
 #JS
+=======
+#JS 
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 js_info_dict = {
 	'packages': ('Invoices.package',),
 }
@@ -39,9 +43,12 @@ url(r'^soci/', include(user_admin_site.urls)),
 url(r'^invoices/', include('Invoices.urls', namespace='Invoices')),
 #Our welcoming module
 
+<<<<<<< HEAD
 #Our editing of general types
 (r'^being_types/$', 'General.views.show_being_types'),
 
+=======
+>>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 #Default http index --> redirect to soci space
 url(r'^', include(user_admin_site.urls)),
 
