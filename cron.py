@@ -8,8 +8,6 @@ from datetime import datetime
 from Invoices.models import Email, EmailNotification
 from Invoices.models import Email, EmailNotification, period, PeriodClose, paymentEntities, Soci, SalesInvoice, PurchaseInvoice, periodTaxes
 
-<<<<<<< HEAD
-=======
 
 class testBot(CronJobBase):
 	RUN_EVERY_MINS = 0 # every 1 min
@@ -22,7 +20,7 @@ class testBot(CronJobBase):
 		bot = bot_period_manager()
 		bot.render()
 
->>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
+
 """
   Not tested code, runcrons to exect it.
 """
@@ -58,12 +56,12 @@ class testEmail(CronJobBase):
 
 		print connection.open()
 		print "connaction opened"
-		
+
 		print "Sending"
-		oneemail = mail.EmailMessage(yNotifications.subject, 
-			yNotifications.body, 
-			yNotifications.efrom, 
-			yNotifications.to_list(), 
+		oneemail = mail.EmailMessage(yNotifications.subject,
+			yNotifications.body,
+			yNotifications.efrom,
+			yNotifications.to_list(),
 			connection=connection
 		)
 		print oneemail.send()
@@ -71,7 +69,7 @@ class testEmail(CronJobBase):
 		print "Closing connection"
 		connection.close()
 
-		
+
 
 class EmailsNotifierCron(CronJobBase):
 	RUN_EVERY_MINS = 0 # every 1 min
@@ -82,7 +80,7 @@ class EmailsNotifierCron(CronJobBase):
 	def do(self):
 		print "EmailsNotifierCron Cron is disabled by code"
 		return
-	
+
 		output =  "Send mail start"
 		#Get all active notificators
 		EmailsToSend = EmailNotification.objects.filter(is_active=True)
@@ -100,17 +98,17 @@ class EmailsNotifierCron(CronJobBase):
 #				oneemail = mail.EmailMessage(yNotifications.subject, yNotifications.body, yNotifications.efrom, ["gestioci@cooperativa.cat",], [yNotifications.get_notification_emails_list(),], connection=connection)
 				try:
 					print "a"
-		
+
 					#oneemail = mail.EmailMessage("XXXXXXprueba sin u", yNotifications.body, yNotifications.efrom, ["gestioci@cooperativa.cat",], ["gestioci@cooperativa.cat", "jaimesanchezm@gmail.com","gallardonegro@correo.nu"], connection=connection)
-					
+
 					oneemail = mail.EmailMessage("En pruebas: Consulta administracion " + yNotifications.subject, yNotifications.body, yNotifications.efrom, ["gestioci@cooperativa.cat",], ["ox@enredaos.net", "gestioci@cooperativa.cat", "aleph@riseup.net", "jaimesanchezm@gmail.com","gallardonegro@correo.nu"], connection=connection)
 					print "b"
 					oneemail.send()
 				except:
-		
+
 					print "caso"
 					#oneemail = mail.EmailMessage("XXXXXXprueba con  u", yNotifications.body, yNotifications.efrom, [u"jaimesanchezm@gmail.com",], [u"aleph@riseup.net",u"jaimesanchezm@gmail.com",u"gallardonegro@correo.nu"], connection=connection)
-				
+
 				#Send
 				#oneemail.send()
 				print "paso"
@@ -127,7 +125,7 @@ class PeriodCloseAutomaticClose( CronJobBase ):
 
 	schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
 	code = 'PeriodCloseAutomaticClose' # a unique code
-	
+
 	def do(self):
 		print "PeriodCloseAutomaticClose Cron is disabled by code"
 		return
@@ -140,18 +138,14 @@ class PeriodCloseAutomaticClose( CronJobBase ):
 		for ob_period in qs_periods:
 			print "process "
 			print ob_period
-			
+
 			#For each cooper
 			a = 0
 			for ob_cooper in Soci.objects.filter(user__is_superuser=False):
-<<<<<<< HEAD
-				
-=======
 
->>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 				if not PeriodClose.objects.filter(period=ob_period, user=ob_cooper.user):
 					a = a + 1
-					print "cooper: "  
+					print "cooper: "
 					print ob_cooper
 					print " needs automatic close! Procceding..."
 					ob_PeriodClose = PeriodClose(period=ob_period, user=ob_cooper.user)
@@ -162,7 +156,7 @@ class PeriodCloseAutomaticClose( CronJobBase ):
 						sales_invoicedVAT += item.invoicedVAT()
 						sales_assignedVAT += item.assignedVAT()
 						sales_totalVAT += item.total()
-				
+
 					ob_PeriodClose.Sales_total = Decimal ( "%.2f" % sales_total )
 					ob_PeriodClose.Sales_invoicedVAT = Decimal ( "%.2f" % sales_invoicedVAT )
 					ob_PeriodClose.Sales_assignedVAT = Decimal ( "%.2f" % sales_assignedVAT )
@@ -195,7 +189,7 @@ class PeriodCloseAutomaticClose( CronJobBase ):
 					qs_Tax = periodTaxes.objects.filter(min_base__lte=sales_total, max_base__gte=sales_total)
 					value = Decimal('0.00')
 					if qs_Tax.count() == 1:
-						value = Decimal ( "%.2f" % qs_Tax[0].taxId ) 
+						value = Decimal ( "%.2f" % qs_Tax[0].taxId )
 					else:
 						value = -1
 					ob_PeriodClose.periodTAX = value
@@ -214,12 +208,6 @@ class PeriodCloseAutomaticClose( CronJobBase ):
 					print " Going to save..."
 					ob_PeriodClose.save()
 					print " saved!"
-<<<<<<< HEAD
-			print "ss"
-			print a
-=======
 
->>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
-#execute and see log --> python manage.py runcrons 
+#execute and see log --> python manage.py runcrons
 #see register created in http://localhost:8080/admin/django_cron/cronjoblog/     Code = EmailsNotifierCron
-

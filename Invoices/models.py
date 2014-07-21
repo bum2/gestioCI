@@ -11,11 +11,11 @@ from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
 from csvimport.models import CSVImport
 
-''' 
+'''
 	ENTITIES:
 00: PERIODOS [models.py/period]
 
-01: USUARIOS 
+01: USUARIOS
 	011: SOCIOS [models.py/soci]
 		0111: PROVEEDORES [models.py/providers]
 		0112: CLIENTES [models.py/clients]
@@ -56,20 +56,17 @@ class periodTaxes(models.Model):
 	min_base = models.IntegerField(verbose_name= _(u"Base imposable Mínima"))
 	max_base = models.IntegerField(verbose_name= _(u"Base imposable Màxima"))
 
-<<<<<<< HEAD
 	def __unicode__(self):
 		return self.taxId
 
 	def __getitem__(self, value):
 		return value
 
-=======
->>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 	class Meta:
 		verbose_name = _(u'A - Taula quotes')
 		verbose_name_plural = _(u'A - Taula quotes')
 
- 
+
 class Coop(models.Model):
 	name = models.CharField(verbose_name=_(u"Nom"), unique=True, db_index=True, max_length=200)
 
@@ -98,10 +95,7 @@ class Soci(models.Model):
 	def email( self ):
 		return self.user.email
 	email.short_description = _(u"Email")
-<<<<<<< HEAD
-=======
 
->>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
 	class Meta:
 		verbose_name= _(u'E - Soci')
 		verbose_name_plural= _(u'E - Socis')
@@ -176,19 +170,13 @@ class paymentEntities(models.Model):
 
 
 class period(models.Model):
-<<<<<<< HEAD
-	label = models.CharField(verbose_name=_(u"Títol"), unique=True, max_length=200)
-	first_day = models.DateField(verbose_name=_(u"Inici"), help_text=_(u"Primer dia del període"))
-	date_open = models.DateField(verbose_name=_(u"Obert"))
-	date_close = models.DateField(verbose_name=_(u"Tancat"))
 
-=======
 	label = models.CharField(verbose_name=_(u"Títol"), max_length=200)
 	first_day = models.DateField(verbose_name=_(u"Inici"), help_text=_(u"Primer dia del període"))
 	date_open = models.DateField(verbose_name=_(u"Obert"))
 	date_close = models.DateField(verbose_name=_(u"Tancat"))
 	exported = models.BooleanField (verbose_name=_("Exported"), help_text=_("exported and archived after closing"), default=False)
->>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
+
 	def period(self):
 		return ('%s %s') % (self.label, self.first_day.year)
 
@@ -255,7 +243,7 @@ class EmailNotification(Email):
 			(1, self.period.date_close - timedelta(days=self.offset_days) ),
 			(2, self.period.date_close),
 			(3, self.pointed_date),
-		)	
+		)
 		return str(notification_functions[int(self.notification_type)][1])
 	execution_date.short_description = _(u"Data d'execució")
 
@@ -385,7 +373,7 @@ class SalesInvoice(models.Model):
 		unique_together = ('user', 'period', 'num', 'percentInvoicedVAT')
 
 
-class PurchaseInvoice(models.Model): 
+class PurchaseInvoice(models.Model):
 	period = models.ForeignKey(period, verbose_name=_(u'Trimestre'), default=1) #period.objects.all().aggregate(max_id=Max('id')).get('max_id'))
 	user = models.ForeignKey(User, null=True, blank=True, verbose_name=_(u"nº COOP"))
 	num = models.CharField(verbose_name=_(u"Nº Factura"), max_length=20, help_text=_(u"Número Factura proveïdor."))
@@ -411,14 +399,14 @@ class PurchaseInvoice(models.Model):
 		return amount
 	IRPFRetention.decimal = True
 	IRPFRetention.short_description = _(u'IRPF (€)')
-	
+
 	def total(self):
 		return self.value + self.expencedVAT() - self.IRPFRetention()
 	total.decimal = True
 	total.short_description = _(u'Total Factura (€)')
-	
+
 	def __unicode__(self):
-			return  self.num 
+			return  self.num
 
 	def __getitem__(self, value):
 			return self.pk
@@ -433,11 +421,9 @@ class PeriodClose(models.Model):
 	period = models.ForeignKey(period, verbose_name=_(u'Trimestre'), blank=True)
 	user = models.ForeignKey(User, null=True, blank=True, verbose_name=_(u"nº COOP"))
 	closed = models.BooleanField (verbose_name=_("closed"), help_text=_("closed_help_text"), default=False)
-<<<<<<< HEAD
 
-=======
 	bot_closed = models.BooleanField (verbose_name=_("admin closed"), help_text=_("closed by bot after expiring time"), default=False)
->>>>>>> 012c04040d2a54e66042fdc995c35ebfd97a0a09
+	
 	#SALES
 	Sales_total = models.DecimalField(verbose_name=_(u"Base Imposable Emeses (€)"), decimal_places=2, max_digits=10, blank=True)
 	Sales_invoicedVAT = models.DecimalField(verbose_name=_(u"IVA Facturat (€)"), decimal_places=2, max_digits=10, blank=True)
@@ -507,7 +493,7 @@ class PeriodClose(models.Model):
 
 	def __getitem__(self, value):
 		return self.pk
-	
+
 	def __unicode__(self):
 		return self.period.label
 
