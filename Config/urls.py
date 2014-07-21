@@ -13,7 +13,7 @@ admin.autodiscover()
 
 
 #URL PARAMETERS
-#JS 
+#JS
 js_info_dict = {
 	'packages': ('Invoices.package',),
 }
@@ -38,6 +38,9 @@ url(r'^soci/', include(user_admin_site.urls)),
 #Our invoicing module
 url(r'^invoices/', include('Invoices.urls', namespace='Invoices')),
 #Our welcoming module
+
+#Our editing of general types
+(r'^being_types/$', 'General.views.show_being_types'),
 
 #Default http index --> redirect to soci space
 url(r'^', include(user_admin_site.urls)),
