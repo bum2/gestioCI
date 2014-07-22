@@ -46,7 +46,7 @@ To start using the General app in a new database, the recommended starting proce
 
   - 5.1- 'Record' (related class: 'Record').
 
-  - 5.2- 'Currency' (related class: 'Currency').
+  - 5.2- 'Unit' (related class: 'Unit').
 
   - 5.3- 'Material' (related class: 'Material').
 
@@ -99,7 +99,7 @@ To start using the General app in a new database, the recommended starting proce
 
   - Artworks (abstract) or simply Works, are for any thing created or produced by someone. They are always a result of an 'art' played by a 'being'. Main subclasses creating real whole tables and uid's are:
 
-    - Currency (small table of currencies used),
+    - Units (medium table of units used, like currency, size, volume, etc),
 
     - Record (big table, which will hold unique id's for every record, divided in some record types: Accounts, Ratios, Memberships, etc),
 
@@ -107,7 +107,7 @@ To start using the General app in a new database, the recommended starting proce
 
     - Non-material (big table, holding uid's for every non-physical creation, say digital goods, cultural production, virtual products, etc).
 
-  - Concepts (real class, as a tree) is for any item that is not a being, a verb, a place or a created thing. All 'types' are concepts, and we can use other branches for other concepts (say Units).
+  - Concepts (real class, as a tree) is for any item that is not a being, a verb, a place or a created thing. All 'types' are concepts, and we can use other branches for other groups of concepts.
 
 
 - **Why there are no 'types' for Arts and Concepts?**

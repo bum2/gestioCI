@@ -117,9 +117,9 @@ admin.site.register(Job, MPTTModelAdmin)
 
 #admin.site.register(Artwork)
 admin.site.register(Artwork_Type, MPTTModelAdmin) # Comment this line after creating 'Currency', 'Record', 'Material' and 'Nonmaterial' inside Artwork_Types
-admin.site.register(Currency)
-admin.site.register(Currency_Type, MPTTModelAdmin)
-admin.site.register(CurrencyRatio)
+admin.site.register(Unit)
+admin.site.register(Unit_Type, MPTTModelAdmin)
+admin.site.register(UnitRatio)
 
 admin.site.register(Nonmaterial)
 admin.site.register(Nonmaterial_Type, MPTTModelAdmin)

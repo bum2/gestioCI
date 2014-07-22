@@ -327,36 +327,37 @@ class Record_Type(Artwork_Type):
     verbose_name_plural= _(u'o- Tipus de Registres')
 
 
-
-class Currency(Artwork):  # Create own ID's
-  #artwork = models.OneToOneField('Artwork', primary_key=True, parent_link=True)
-  currency_type = models.ForeignKey('Currency_Type', blank=True, null=True, verbose_name=_(u"Tipus de Moneda"))
+class Unit(Artwork):  # Create own ID's
+  unit_type = TreeForeignKey('Unit_Type', blank=True, null=True, verbose_name=_(u"Tipus d'Unitat"))
   code = models.CharField(max_length=4, blank=True, null=True, verbose_name=_(u"Codi o Símbol"))
-  region = TreeForeignKey('Region', blank=True, null=True, verbose_name=_(u"Regió d'us"))
-
+  rel_region = TreeForeignKey('Region', blank=True, null=True, verbose_name=_(u"Regió d'us asociada"))
+  rel_human = TreeForeignKey('Human', blank=True, null=True, verbose_name=_(u"Entitat relacionada"))
   class Meta:
-    verbose_name= _(u'Moneda')
-    verbose_name_plural= _(u'o- Monedes')
+    verbose_name= _(u'Unitat')
+    verbose_name_plural= _(u'o- Unitats')
 
-class Currency_Type(Artwork_Type):
+
+class Unit_Type(Artwork_Type):
   artwork_type = models.OneToOneField('Artwork_Type', primary_key=True, parent_link=True)
 
   class Meta:
-    verbose_name = _(u"Tipus de Moneda")
-    verbose_name_plural = _(u"o- Tipus de Monedes")
+    verbose_name = _(u"Tipus d'Unitat")
+    verbose_name_plural = _(u"o- Tipus d'Unitats")
 
 
 
-class CurrencyRatio(Record):
+
+
+class UnitRatio(Record):
   record = models.OneToOneField('Record', primary_key=True, parent_link=True)
 
-  in_currency = models.ForeignKey('Currency', related_name='ratio_in', verbose_name=_(u"Moneda entrant"))
+  in_unit = models.ForeignKey('Unit', related_name='ratio_in', verbose_name=_(u"Unitat entrant"))
   rate = models.DecimalField(max_digits=6, decimal_places=3, verbose_name=_(u"Ratio multiplicador"))
-  out_currency = models.ForeignKey('Currency', related_name='ratio_out',verbose_name=_(u"Moneda sortint"))
+  out_unit = models.ForeignKey('Unit', related_name='ratio_out',verbose_name=_(u"Unitat sortint"))
 
   class Meta:
-    verbose_name = _(u"Equivalencia Monedes")
-    verbose_name_plural = _(u"o- Equivalencies Monedes")
+    verbose_name = _(u"Equivalencia entre Unitats")
+    verbose_name_plural = _(u"o- Equivalencies entre Unitats")
 
 
 
@@ -365,7 +366,7 @@ class AccountCes(Record):
 
   human = models.ForeignKey('Human', related_name='accountsCes', verbose_name=_(u"Entitat humana persuaria"))
   entity = models.ForeignKey('Project', blank=True, null=True, verbose_name=_(u"Xarxa del compte"))
-  currency = models.ForeignKey('Currency', blank=True, null=True, verbose_name=_(u"Moneda"))
+  unit = models.ForeignKey('Unit', blank=True, null=True, verbose_name=_(u"Unitat (moneda)"))
   code = models.CharField(max_length=10, blank=True, null=True, verbose_name=_(u"Codi"))
   number = models.CharField(max_length=4, blank=True, null=True, verbose_name=_(u"Número"))
 
@@ -381,7 +382,7 @@ class AccountBank(Record):
 
   human = models.ForeignKey('Human', related_name='accountsBank', verbose_name=_(u"Entitat humana titular"))
   company = models.ForeignKey('Company', blank=True, null=True, verbose_name=_(u"Entitat Bancaria"))
-  currency = models.ForeignKey('Currency', blank=True, null=True, verbose_name=_(u"Moneda"))
+  unit = models.ForeignKey('Unit', blank=True, null=True, verbose_name=_(u"Unitat (moneda)"))
   code = models.CharField(max_length=10, blank=True, null=True, verbose_name=_(u"Codi SWIF"))
   number = models.CharField(max_length=4, blank=True, null=True, verbose_name=_(u"Número de Compte IBAN"))
 
