@@ -87,8 +87,9 @@ To start using the General app in a new database, the recommended starting proce
 
 
 ** 'General' FAQ's **
+-----
 
-- What is each of the general types for?
+- **What is each of the general types for?**
 
   - Beings (abstact class) is for any kind of being or entity. Its Human real subclass generates uid's for any human type item. One day we may need to define other Being main types, non-human (say 'Animals').
 
@@ -109,11 +110,11 @@ To start using the General app in a new database, the recommended starting proce
   - Concepts (real class, as a tree) is for any item that is not a being, a verb, a place or a created thing. All 'types' are concepts, and we can use other branches for other concepts (say Units).
 
 
-- Why there are no 'types' for Arts and Concepts?
+- **Why there are no 'types' for Arts and Concepts?**
 
 Because arts are nestable and work like types, it's no required a kind of art because one art can be under another. Also concepts are nestable and the 'types of things' are just one branch of Concepts.
 
 
-- When we need to define a new kind of Record?
+- **When we need to define a new kind of Record?**
 
 The Record table is used to hold and give a uid to every unique record, which can be of any record_type. This way we have no possible conflicts between unique registered records (mainly digital). A record can hold, separately as a unique item, the relation between a person and a project (like oficial memberships), can have a creation date (and history), a related physical document, a related place or art, etc. It depends on the kind of record we need. We will define a new record type to hold all the contracts, the insurances, the licences, etc. They are already defined as records the accounts and the inter-currency ratios.
