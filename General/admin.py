@@ -99,7 +99,7 @@ class PersonAdmin(admin.ModelAdmin):
 #admin.site.register(Tree)
 
 #admin.site.register(Being)
-#admin.site.register(Being_Type, MPTTModelAdmin)
+admin.site.register(Being_Type, MPTTModelAdmin) # Comment this line after creating 'Human', then 'Person', 'Project' and 'Company' under Human, inside Being_Types.
 #admin.site.register(Human)
 admin.site.register(Person, PersonAdmin)
 
@@ -110,13 +110,13 @@ admin.site.register(Company)
 admin.site.register(Company_Type, MPTTModelAdmin)
 
 
-#admin.site.register(Art, MPTTModelAdmin)
+admin.site.register(Art, MPTTModelAdmin) # Comment this line after creating 'Relation' and 'Job' inside Arts.
 admin.site.register(Relation, MPTTModelAdmin)
 admin.site.register(Job, MPTTModelAdmin)
 
 
 #admin.site.register(Artwork)
-#admin.site.register(Artwork_Type, MPTTModelAdmin)
+admin.site.register(Artwork_Type, MPTTModelAdmin) # Comment this line after creating 'Currency', 'Record', 'Material' and 'Nonmaterial' inside Artwork_Types
 admin.site.register(Currency)
 admin.site.register(Currency_Type, MPTTModelAdmin)
 admin.site.register(CurrencyRatio)
@@ -134,7 +134,7 @@ admin.site.register(AccountBank)
 
 
 #admin.site.register(Space)
-#admin.site.register(Space_Type, MPTTModelAdmin)
+admin.site.register(Space_Type, MPTTModelAdmin) # Comment this line after creating 'Address' and 'Region' inside Space_Types
 admin.site.register(Address)
 admin.site.register(Address_Type, MPTTModelAdmin)
 
@@ -142,4 +142,4 @@ admin.site.register(Region, MPTTModelAdmin)
 admin.site.register(Region_Type, MPTTModelAdmin)
 
 admin.site.register(Concept, MPTTModelAdmin)
-admin.site.register(Type, MPTTModelAdmin)
+admin.site.register(Type, MPTTModelAdmin) # Comment this line whenever you don't need to edit the main whole Types tree
