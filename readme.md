@@ -64,7 +64,7 @@ To start using the General app in a new database, the recommended starting proce
 
   - 7.2- 'Account Bank' (related class: 'AccountBank')
 
-  - 7.3- 'Currency Ratio'(related class: 'CurrencyRatio')
+  - 7.3- 'Unit Ratio'(related class: 'UnitRatio')
 
 - 8- At this point, we can exclude some admin menu items/views, editing the admin.py inside General app/folder and commenting some lines at the bottom of that file (these lines have a comment marking which ones and some info):
 
@@ -78,11 +78,11 @@ To start using the General app in a new database, the recommended starting proce
 
   - 8.5- If you don't want to edit directly the whole Types tree, comment the line 'admin.site.register(Type, MPTTModelAdmin)' and perhaps also the Concept main tree (commenting the line 'admin.site.register(Concept, MPTTModelAdmin)').
 
-- 9- Now we can start defining some production subtypes for each main subclasses, using the appropiate '*_Types' view, and assigning the correct parent for each one (for example: inside Currency_Types you can put 'Social currency', 'Fiat currency' and 'Cryptocurrency', all related to the same parent type 'Currency').
+- 9- Now we can start defining some production subtypes for each main subclasses, using the appropiate '*_Types' view, and assigning the correct parent for each one (for example: inside Unit_Types you can put 'Currency' and then 'Social currency', 'Fiat currency' and 'Cryptocurrency', all under type Currency).
 
 - 10- Also we can start defining Arts (they are all Verbs), as Jobs or Relation kinds, which can be nested.
 
-- 11- Also we can start defining real items of each type: some Projects, some Persons (which can be related eachother), some Currencies, some Regions (which can be nested), some Addresses or Accounts (which can be assigned to a person or project), etc.
+- 11- Also we can start defining real items of each type: some Projects, some Persons (which can be related eachother), some currency Units, some Regions (which can be nested), some Addresses or Accounts (which can be assigned to a person or project), etc.
 
 
 
@@ -117,4 +117,4 @@ Because arts are nestable and work like types, it's no required a kind of art be
 
 - **When we need to define a new kind of Record?**
 
-The Record table is used to hold and give a uid to every unique record, which can be of any record_type. This way we have no possible conflicts between unique registered records (mainly digital). A record can hold, separately as a unique item, the relation between a person and a project (like oficial memberships), can have a creation date (and history), a related physical document, a related place or art, etc. It depends on the kind of record we need. We will define a new record type to hold all the contracts, the insurances, the licences, etc. They are already defined as records the accounts and the inter-currency ratios.
+The Record table is used to hold and give a uid to every unique record, which can be of any record_type. This way we have no possible conflicts between unique registered records (mainly digital). A record can hold, separately as a unique item, the relation between a person and a project (like oficial memberships), can have a creation date (and history), a related physical document, a related place or art, etc. It depends on the kind of record we need. We will define a new record type to hold all the contracts, the insurances, the licences, etc. They are already defined as records the accounts and the inter-units ratios.
