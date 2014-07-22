@@ -95,7 +95,7 @@ To start using the General app in a new database, the recommended starting proce
 
   - Arts (real class, as a tree) is for all relations, activities, jobs, actions, etc... All them are Verbs, defined as so with the 'name' version, the verb 'infinitive' and the verb 'gerund'. All arts/verbs can be nested, they don't need a separate 'type', and we start defining them in two main trees: Relations and Jobs (sectors).
 
-  - Spaces (abstract) is for any kind of data defining a physical space, zone or place. The two initial subclasses or types, generating real uid's for each item are Regions and Addresses (which can be related to a Region).
+  - Spaces (abstract) is for any kind of data defining a physical space, zone or place. The two initial subclasses or types, generating real uid's for each item are Regions (which can be nested) and Addresses (which can be related to a Region).
 
   - Artworks (abstract) or simply Works, are for any thing created or produced by someone. They are always a result of an 'art' played by a 'being'. Main subclasses creating real whole tables and uid's are:
 
@@ -107,7 +107,7 @@ To start using the General app in a new database, the recommended starting proce
 
     - Non-material (big table, holding uid's for every non-physical creation, say digital goods, cultural production, virtual products, etc).
 
-  - Concepts (real class, as a tree) is for any item that is not a being, a verb, a place or a created thing. All 'types' are concepts, and we can use other branches for other groups of concepts.
+  - Concepts (real class, as a tree) is for any item that is not a being, a verb, a place nor a created thing. All 'types' are concepts, and we can use other branches for other groups of concepts.
 
 
 - **Why there are no 'types' for Arts and Concepts?**
