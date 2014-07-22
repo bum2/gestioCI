@@ -86,7 +86,7 @@ To start using the General app in a new database, the recommended starting proce
 
 
 
-** 'General' FAQ's **
+'General' FAQ's
 -----
 
 - **What is each of the general types for?**
