@@ -189,7 +189,6 @@ class Migration(SchemaMigration):
 
         # Adding model 'Address_Type'
         db.create_table(u'General_address_type', (
-            (u'type_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['General.Type'], unique=True)),
             ('space_type', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['General.Space_Type'], unique=True, primary_key=True)),
         ))
         db.send_create_signal(u'General', ['Address_Type'])
@@ -212,7 +211,6 @@ class Migration(SchemaMigration):
 
         # Adding model 'Region_Type'
         db.create_table(u'General_region_type', (
-            (u'type_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['General.Type'], unique=True)),
             ('space_type', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['General.Space_Type'], unique=True, primary_key=True)),
         ))
         db.send_create_signal(u'General', ['Region_Type'])
@@ -265,37 +263,38 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'General', ['Record_Type'])
 
-        # Adding model 'Currency'
-        db.create_table(u'General_currency', (
+        # Adding model 'Unit'
+        db.create_table(u'General_unit', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('currency_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Currency_Type'], null=True, blank=True)),
+            ('unit_type', self.gf('mptt.fields.TreeForeignKey')(to=orm['General.Unit_Type'], null=True, blank=True)),
             ('code', self.gf('django.db.models.fields.CharField')(max_length=4, null=True, blank=True)),
-            ('region', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Region'], null=True, blank=True)),
+            ('rel_region', self.gf('mptt.fields.TreeForeignKey')(to=orm['General.Region'], null=True, blank=True)),
+            ('rel_human', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Human'], null=True, blank=True)),
         ))
-        db.send_create_signal(u'General', ['Currency'])
+        db.send_create_signal(u'General', ['Unit'])
 
-        # Adding model 'Currency_Type'
-        db.create_table(u'General_currency_type', (
+        # Adding model 'Unit_Type'
+        db.create_table(u'General_unit_type', (
             ('artwork_type', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['General.Artwork_Type'], unique=True, primary_key=True)),
         ))
-        db.send_create_signal(u'General', ['Currency_Type'])
+        db.send_create_signal(u'General', ['Unit_Type'])
 
-        # Adding model 'CurrencyRatio'
-        db.create_table(u'General_currencyratio', (
+        # Adding model 'UnitRatio'
+        db.create_table(u'General_unitratio', (
             ('record', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['General.Record'], unique=True, primary_key=True)),
-            ('in_currency', self.gf('django.db.models.fields.related.ForeignKey')(related_name='ratio_in', to=orm['General.Currency'])),
+            ('in_unit', self.gf('django.db.models.fields.related.ForeignKey')(related_name='ratio_in', to=orm['General.Unit'])),
             ('rate', self.gf('django.db.models.fields.DecimalField')(max_digits=6, decimal_places=3)),
-            ('out_currency', self.gf('django.db.models.fields.related.ForeignKey')(related_name='ratio_out', to=orm['General.Currency'])),
+            ('out_unit', self.gf('django.db.models.fields.related.ForeignKey')(related_name='ratio_out', to=orm['General.Unit'])),
         ))
-        db.send_create_signal(u'General', ['CurrencyRatio'])
+        db.send_create_signal(u'General', ['UnitRatio'])
 
         # Adding model 'AccountCes'
         db.create_table(u'General_accountces', (
             ('record', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['General.Record'], unique=True, primary_key=True)),
             ('human', self.gf('django.db.models.fields.related.ForeignKey')(related_name='accountsCes', to=orm['General.Human'])),
             ('entity', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Project'], null=True, blank=True)),
-            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Currency'], null=True, blank=True)),
+            ('unit', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Unit'], null=True, blank=True)),
             ('code', self.gf('django.db.models.fields.CharField')(max_length=10, null=True, blank=True)),
             ('number', self.gf('django.db.models.fields.CharField')(max_length=4, null=True, blank=True)),
         ))
@@ -306,7 +305,7 @@ class Migration(SchemaMigration):
             ('record', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['General.Record'], unique=True, primary_key=True)),
             ('human', self.gf('django.db.models.fields.related.ForeignKey')(related_name='accountsBank', to=orm['General.Human'])),
             ('company', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Company'], null=True, blank=True)),
-            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Currency'], null=True, blank=True)),
+            ('unit', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['General.Unit'], null=True, blank=True)),
             ('code', self.gf('django.db.models.fields.CharField')(max_length=10, null=True, blank=True)),
             ('number', self.gf('django.db.models.fields.CharField')(max_length=4, null=True, blank=True)),
         ))
@@ -401,14 +400,14 @@ class Migration(SchemaMigration):
         # Deleting model 'Record_Type'
         db.delete_table(u'General_record_type')
 
-        # Deleting model 'Currency'
-        db.delete_table(u'General_currency')
+        # Deleting model 'Unit'
+        db.delete_table(u'General_unit')
 
-        # Deleting model 'Currency_Type'
-        db.delete_table(u'General_currency_type')
+        # Deleting model 'Unit_Type'
+        db.delete_table(u'General_unit_type')
 
-        # Deleting model 'CurrencyRatio'
-        db.delete_table(u'General_currencyratio')
+        # Deleting model 'UnitRatio'
+        db.delete_table(u'General_unitratio')
 
         # Deleting model 'AccountCes'
         db.delete_table(u'General_accountces')
@@ -422,19 +421,19 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'AccountBank', '_ormbases': [u'General.Record']},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
             'company': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Company']", 'null': 'True', 'blank': 'True'}),
-            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Currency']", 'null': 'True', 'blank': 'True'}),
             'human': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'accountsBank'", 'to': u"orm['General.Human']"}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '4', 'null': 'True', 'blank': 'True'}),
-            'record': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Record']", 'unique': 'True', 'primary_key': 'True'})
+            'record': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Record']", 'unique': 'True', 'primary_key': 'True'}),
+            'unit': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Unit']", 'null': 'True', 'blank': 'True'})
         },
         u'General.accountces': {
             'Meta': {'object_name': 'AccountCes', '_ormbases': [u'General.Record']},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '10', 'null': 'True', 'blank': 'True'}),
-            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Currency']", 'null': 'True', 'blank': 'True'}),
             'entity': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Project']", 'null': 'True', 'blank': 'True'}),
             'human': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'accountsCes'", 'to': u"orm['General.Human']"}),
             'number': ('django.db.models.fields.CharField', [], {'max_length': '4', 'null': 'True', 'blank': 'True'}),
-            'record': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Record']", 'unique': 'True', 'primary_key': 'True'})
+            'record': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Record']", 'unique': 'True', 'primary_key': 'True'}),
+            'unit': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Unit']", 'null': 'True', 'blank': 'True'})
         },
         u'General.address': {
             'Meta': {'object_name': 'Address'},
@@ -451,9 +450,8 @@ class Migration(SchemaMigration):
             'town': ('django.db.models.fields.CharField', [], {'max_length': '40'})
         },
         u'General.address_type': {
-            'Meta': {'object_name': 'Address_Type', '_ormbases': [u'General.Type']},
-            'space_type': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Space_Type']", 'unique': 'True', 'primary_key': 'True'}),
-            u'type_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Type']", 'unique': 'True'})
+            'Meta': {'object_name': 'Address_Type', '_ormbases': [u'General.Space_Type']},
+            'space_type': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Space_Type']", 'unique': 'True', 'primary_key': 'True'})
         },
         u'General.art': {
             'Meta': {'object_name': 'Art'},
@@ -497,25 +495,6 @@ class Migration(SchemaMigration):
             'parent': ('mptt.fields.TreeForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': u"orm['General.Concept']"}),
             u'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             u'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
-        },
-        u'General.currency': {
-            'Meta': {'object_name': 'Currency'},
-            'code': ('django.db.models.fields.CharField', [], {'max_length': '4', 'null': 'True', 'blank': 'True'}),
-            'currency_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Currency_Type']", 'null': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'region': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Region']", 'null': 'True', 'blank': 'True'})
-        },
-        u'General.currency_type': {
-            'Meta': {'object_name': 'Currency_Type', '_ormbases': [u'General.Artwork_Type']},
-            'artwork_type': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Artwork_Type']", 'unique': 'True', 'primary_key': 'True'})
-        },
-        u'General.currencyratio': {
-            'Meta': {'object_name': 'CurrencyRatio', '_ormbases': [u'General.Record']},
-            'in_currency': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'ratio_in'", 'to': u"orm['General.Currency']"}),
-            'out_currency': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'ratio_out'", 'to': u"orm['General.Currency']"}),
-            'rate': ('django.db.models.fields.DecimalField', [], {'max_digits': '6', 'decimal_places': '3'}),
-            'record': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Record']", 'unique': 'True', 'primary_key': 'True'})
         },
         u'General.human': {
             'Meta': {'object_name': 'Human'},
@@ -562,7 +541,7 @@ class Migration(SchemaMigration):
             'human': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Human']", 'unique': 'True', 'primary_key': 'True'}),
             'id_card': ('django.db.models.fields.CharField', [], {'max_length': '9', 'blank': 'True'}),
             'nickname2': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'}),
-            'projects': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['General.Project']", 'null': 'True', 'blank': 'True'}),
+            'projects': ('mptt.fields.TreeManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['General.Project']", 'null': 'True', 'blank': 'True'}),
             'surnames': ('django.db.models.fields.CharField', [], {'max_length': '40', 'blank': 'True'})
         },
         u'General.project': {
@@ -606,9 +585,8 @@ class Migration(SchemaMigration):
             u'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
         },
         u'General.region_type': {
-            'Meta': {'object_name': 'Region_Type', '_ormbases': [u'General.Type']},
-            'space_type': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Space_Type']", 'unique': 'True', 'primary_key': 'True'}),
-            u'type_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Type']", 'unique': 'True'})
+            'Meta': {'object_name': 'Region_Type', '_ormbases': [u'General.Space_Type']},
+            'space_type': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Space_Type']", 'unique': 'True', 'primary_key': 'True'})
         },
         u'General.relation': {
             'Meta': {'object_name': 'Relation', '_ormbases': [u'General.Art']},
@@ -623,6 +601,26 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Type', '_ormbases': [u'General.Concept']},
             'clas': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'concept': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Concept']", 'unique': 'True', 'primary_key': 'True'})
+        },
+        u'General.unit': {
+            'Meta': {'object_name': 'Unit'},
+            'code': ('django.db.models.fields.CharField', [], {'max_length': '4', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
+            'rel_human': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['General.Human']", 'null': 'True', 'blank': 'True'}),
+            'rel_region': ('mptt.fields.TreeForeignKey', [], {'to': u"orm['General.Region']", 'null': 'True', 'blank': 'True'}),
+            'unit_type': ('mptt.fields.TreeForeignKey', [], {'to': u"orm['General.Unit_Type']", 'null': 'True', 'blank': 'True'})
+        },
+        u'General.unit_type': {
+            'Meta': {'object_name': 'Unit_Type', '_ormbases': [u'General.Artwork_Type']},
+            'artwork_type': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Artwork_Type']", 'unique': 'True', 'primary_key': 'True'})
+        },
+        u'General.unitratio': {
+            'Meta': {'object_name': 'UnitRatio', '_ormbases': [u'General.Record']},
+            'in_unit': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'ratio_in'", 'to': u"orm['General.Unit']"}),
+            'out_unit': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'ratio_out'", 'to': u"orm['General.Unit']"}),
+            'rate': ('django.db.models.fields.DecimalField', [], {'max_digits': '6', 'decimal_places': '3'}),
+            'record': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['General.Record']", 'unique': 'True', 'primary_key': 'True'})
         }
     }
 

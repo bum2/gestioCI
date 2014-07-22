@@ -94,6 +94,36 @@ class PersonAdmin(admin.ModelAdmin):
   filter_horizontal = ('addresses', 'jobs', 'projects',)
 
 
+class CompanyAdmin(admin.ModelAdmin): # admin.ModelAdmin):
+  #class Media:
+  #  js = ('mselect-to-mcheckbox.js', 'jquery-ui-1.10.2.custom.js',)
+  #  css = {
+  #    'all': ('css/mselect-to-mcheckbox.css',)
+  #  }
+
+  fieldsets = (
+    (None, {
+      'fields':(('name', 'nickname'), ('legal_name', 'vat_number'), ('being_type', 'website'), ('email', 'telephone'))
+    }),
+    (_(u"Membres de referencia"), {
+      'classes': ('collapse',),
+      'fields':('ref_members',),
+      #'filter_horizontal': ('members', 'ref_members',)
+    }),
+    (_(u"Adreçes"), {
+      'classes': ('collapse',),
+      'fields': ('addresses',)
+    }),
+    (_("Arts"), {
+      'classes': ('collapse',),
+      'fields': ('jobs',)
+    }),
+    (_(u"Dates inici/fi"), {
+      'classes': ('collapse',),
+      'fields': (('birth_date', 'dead_date'),)
+    })
+  )
+  filter_horizontal = ('ref_members', 'addresses', 'jobs')
 
 # Register your models here.
 #admin.site.register(Tree)
@@ -106,7 +136,7 @@ admin.site.register(Person, PersonAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Project_Type, MPTTModelAdmin)
 
-admin.site.register(Company)
+admin.site.register(Company, CompanyAdmin)
 admin.site.register(Company_Type, MPTTModelAdmin)
 
 
@@ -116,7 +146,7 @@ admin.site.register(Job, MPTTModelAdmin)
 
 
 #admin.site.register(Artwork)
-admin.site.register(Artwork_Type, MPTTModelAdmin) # Comment this line after creating 'Currency', 'Record', 'Material' and 'Nonmaterial' inside Artwork_Types
+admin.site.register(Artwork_Type, MPTTModelAdmin) # Comment this line after creating 'Unit', 'Record', 'Material' and 'Nonmaterial' inside Artwork_Types
 admin.site.register(Unit)
 admin.site.register(Unit_Type, MPTTModelAdmin)
 admin.site.register(UnitRatio)

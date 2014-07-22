@@ -53,6 +53,11 @@ class Type(Concept):
   class Meta:
     verbose_name = _(u"c- Tipus")
 
+  def __unicode__(self):
+    if self.clas is None or self.clas == '':
+      return self.name
+    else:
+      return self.name+' ('+self.clas+')'
 
 
 
@@ -113,7 +118,7 @@ class Person(Human):
       if self.surnames is None or self.surnames == '':
         return self.name+' '+self.nickname
       else:
-        return self.name+' '+self.surnames
+        return self.name+' '+self.surnames+' ('+self.nickname+')'
 
 
 
@@ -331,10 +336,14 @@ class Unit(Artwork):  # Create own ID's
   unit_type = TreeForeignKey('Unit_Type', blank=True, null=True, verbose_name=_(u"Tipus d'Unitat"))
   code = models.CharField(max_length=4, blank=True, null=True, verbose_name=_(u"Codi o Símbol"))
   rel_region = TreeForeignKey('Region', blank=True, null=True, verbose_name=_(u"Regió d'us asociada"))
-  rel_human = TreeForeignKey('Human', blank=True, null=True, verbose_name=_(u"Entitat relacionada"))
+  rel_human = models.ForeignKey('Human', blank=True, null=True, verbose_name=_(u"Entitat relacionada"))
+
   class Meta:
     verbose_name= _(u'Unitat')
     verbose_name_plural= _(u'o- Unitats')
+
+  def __unicode__(self):
+    return self.unit_type.name+' >  '+self.name
 
 
 class Unit_Type(Artwork_Type):
