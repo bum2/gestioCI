@@ -63,17 +63,12 @@ class ProjectAdmin(MPTTModelAdmin): # admin.ModelAdmin):
 
 class PersonAdmin(admin.ModelAdmin):
 
-  class Media:
-    js = ('mselect-to-mcheckbox.js', 'jquery-ui-1.10.2.custom.js',)
-    css = {
-      'all': ('css/mselect-to-mcheckbox.css',)
-    }
+  #class Media:
+  #  js = ('mselect-to-mcheckbox.js', 'jquery-ui-1.10.2.custom.js',)
+  #  css = {
+  #    'all': ('css/mselect-to-mcheckbox.css',)
+  #  }
 
-  #formfield_overrides = {
-  #  TreeManyToManyField: {'widget': MPTTFilteredSelectMultiple('projects', False, attrs={'rows':'10'})},
-  #}
-  #projects = MPTTModelMultipleChoiceField(Project.objects.all(), widget=MPTTFilteredSelectMultiple('projects', False, attrs={'rows':'10'}))
-  #projects = TreeManyToManyField(Project.objects.all(), widget=MPTTFilteredSelectMultiple('projects', False, attrs={'rows':'10'}))
 
   fieldsets = (
     (None, {
