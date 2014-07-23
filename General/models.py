@@ -116,7 +116,7 @@ class Person(Human):
         return self.name+' '+self.surnames
     else:
       if self.surnames is None or self.surnames == '':
-        return self.name+' '+self.nickname
+        return self.name+' ('+self.nickname+')'
       else:
         return self.name+' '+self.surnames+' ('+self.nickname+')'
 
@@ -343,7 +343,7 @@ class Unit(Artwork):  # Create own ID's
     verbose_name_plural= _(u'o- Unitats')
 
   def __unicode__(self):
-    return self.unit_type.name+' >  '+self.name
+    return self.unit_type.name+':  '+self.name
 
 
 class Unit_Type(Artwork_Type):

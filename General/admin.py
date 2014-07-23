@@ -72,7 +72,7 @@ class PersonAdmin(admin.ModelAdmin):
 
   fieldsets = (
     (None, {
-      'fields':(('name', 'surnames'), ('nickname', 'nickname2'), ('email', 'email2'), ('website', 'telephone'))
+      'fields':(('name', 'surnames', 'id_card'), ('nickname', 'nickname2'), ('email', 'email2'), ('website', 'telephone'))
     }),
     (_(u"Adreçes"), {
       'classes': ('collapse',),
@@ -125,11 +125,15 @@ class CompanyAdmin(admin.ModelAdmin): # admin.ModelAdmin):
   )
   filter_horizontal = ('ref_members', 'addresses', 'jobs')
 
+
+
+
 # Register your models here.
+
 #admin.site.register(Tree)
 
 #admin.site.register(Being)
-admin.site.register(Being_Type, MPTTModelAdmin) # Comment this line after creating 'Human', then 'Person', 'Project' and 'Company' under Human, inside Being_Types.
+#admin.site.register(Being_Type, MPTTModelAdmin) # Comment this line after creating 'Human', then 'Person', 'Project' and 'Company' under Human, inside Being_Types.
 #admin.site.register(Human)
 admin.site.register(Person, PersonAdmin)
 
@@ -140,13 +144,13 @@ admin.site.register(Company, CompanyAdmin)
 admin.site.register(Company_Type, MPTTModelAdmin)
 
 
-admin.site.register(Art, MPTTModelAdmin) # Comment this line after creating 'Relation' and 'Job' inside Arts.
+#admin.site.register(Art, MPTTModelAdmin) # Comment this line after creating 'Relation' and 'Job' inside Arts.
 admin.site.register(Relation, MPTTModelAdmin)
 admin.site.register(Job, MPTTModelAdmin)
 
 
 #admin.site.register(Artwork)
-admin.site.register(Artwork_Type, MPTTModelAdmin) # Comment this line after creating 'Unit', 'Record', 'Material' and 'Nonmaterial' inside Artwork_Types
+#admin.site.register(Artwork_Type, MPTTModelAdmin) # Comment this line after creating 'Unit', 'Record', 'Material' and 'Nonmaterial' inside Artwork_Types
 admin.site.register(Unit)
 admin.site.register(Unit_Type, MPTTModelAdmin)
 admin.site.register(UnitRatio)
@@ -164,7 +168,7 @@ admin.site.register(AccountBank)
 
 
 #admin.site.register(Space)
-admin.site.register(Space_Type, MPTTModelAdmin) # Comment this line after creating 'Address' and 'Region' inside Space_Types
+#admin.site.register(Space_Type, MPTTModelAdmin) # Comment this line after creating 'Address' and 'Region' inside Space_Types
 admin.site.register(Address)
 admin.site.register(Address_Type, MPTTModelAdmin)
 
