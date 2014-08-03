@@ -44,6 +44,7 @@ WSGI_APPLICATION = 'Config.wsgi.application'
 2 Application definition
 '''
 INSTALLED_APPS = (
+    #'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,6 +55,7 @@ INSTALLED_APPS = (
     'Invoices', 	# This is gestioCI block1 Selfoccupated coopers APP
 	   'Cooper', 		# This is gestioCI block1 Selfoccupated coopers APP
      'General',  # This is the general models APP including five main types of data
+     'Welcome',   # This is the membership maker APP
 	#common APPS
     'south', 		# This is command line BBDD helper
     'django_cron', 	# This controls scheduled EmailNotifications https://pypi.python.org/pypi/django-cron
@@ -73,9 +75,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 )
-TEMPLATE_CONTEXT_PROCESSORS = (
+
+#from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
+
+TEMPLATE_CONTEXT_PROCESSORS = ( #TCP + (
+  #'django.core.context_processors.request',
 	"django.contrib.auth.context_processors.auth",
-	"django.core.context_processors.debug",
+  "django.core.context_processors.debug",
 	"django.core.context_processors.i18n",
 	"django.core.context_processors.media",
 	"django.core.context_processors.static",
@@ -83,6 +89,35 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 	"django.contrib.messages.context_processors.messages"
 )
 
+# Django Suit configuration example
+SUIT_CONFIG = {
+    # header
+    # 'ADMIN_NAME': 'Django Suit',
+    # 'HEADER_DATE_FORMAT': 'l, j. F Y',
+    # 'HEADER_TIME_FORMAT': 'H:i',
+
+    # forms
+    # 'SHOW_REQUIRED_ASTERISK': True,  # Default True
+    # 'CONFIRM_UNSAVED_CHANGES': True, # Default True
+
+    # menu
+    # 'SEARCH_URL': '/admin/auth/user/',
+    # 'MENU_ICONS': {
+    #    'sites': 'icon-leaf',
+    #    'auth': 'icon-lock',
+    # },
+    # 'MENU_OPEN_FIRST_CHILD': True, # Default True
+    # 'MENU_EXCLUDE': ('auth.group',),
+    # 'MENU': (
+    #     'sites',
+    #     {'app': 'auth', 'icon':'icon-lock', 'models': ('user', 'group')},
+    #     {'label': 'Settings', 'icon':'icon-cog', 'models': ('auth.user', 'auth.group')},
+    #     {'label': 'Support', 'icon':'icon-question-sign', 'url': '/support/'},
+    # ),
+
+    # misc
+    # 'LIST_PER_PAGE': 15
+}
 
 '''
 3 Database
