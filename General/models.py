@@ -152,6 +152,8 @@ class Project(MPTTModel, Human):
   socialweb = models.CharField(max_length=100, blank=True, verbose_name=_(u"Web Social"))
   email2 = models.EmailField(blank=True, verbose_name=_(u"Email alternatiu"))
 
+  images = models.ManyToManyField('General.Image', blank=True, null=True, verbose_name=_(u"Imatges"))
+
   #assets = models.ManyToManyField('Asset', through='rel_Human_Materials', null=True, verbose_name=_(u"Actius del projecte"))
   #def _has_assets(self):
   #  return self.materials.objects.select_related('asset').all()
@@ -174,6 +176,8 @@ class Project(MPTTModel, Human):
     )
   #get_ref_persons.list = ()
   ref_persons = property(get_ref_persons)
+
+  #def _is_larder(self):
 
   class Meta:
     verbose_name= _(u'Projecte')
@@ -301,6 +305,35 @@ class rel_Human_Companies(models.Model):
   def __unicode__(self):
     return '('+self.company.company_type.being_type.name+') '+self.relation.gerund+' > '+self.company.name
 
+class rel_Material_Nonmaterials(models.Model):
+  material = models.ForeignKey('Material')
+  nonmaterial = models.ForeignKey('Nonmaterial', verbose_name=_(u"Inmaterial vinculat"))
+  relation = TreeForeignKey('Relation', related_name='ma_non+', blank=True, null=True)
+  class Meta:
+    verbose_name = _(u"inm")
+    verbose_name_plural = _(u"Inmaterials vinculats")
+  def __unicode__(self):
+    return '('+self.nonmaterial.nonmaterial_type.name+') '+self.relation.gerund+' > '+self.nonmaterial.name
+
+class rel_Material_Records(models.Model):
+  material = models.ForeignKey('Material')
+  record = models.ForeignKey('Record', verbose_name=_(u"Registre vinculat"))
+  relation = TreeForeignKey('Relation', related_name='ma_reg+', blank=True, null=True)
+  class Meta:
+    verbose_name = _(u"rec")
+    verbose_name_plural = _(u"Registres vinculats")
+  def __unicode__(self):
+    return '('+self.record.record_type.name+') '+self.relation.gerund+' > '+self.record.name
+
+class rel_Material_Addresses(models.Model):
+  material = models.ForeignKey('Material')
+  address = models.ForeignKey('Address', verbose_name=_(u"Adreça vinculada"))
+  relation = TreeForeignKey('Relation', related_name='ma_adr+', blank=True, null=True)
+  class Meta:
+    verbose_name = _(u"adr")
+    verbose_name_plural = _(u"Adreçes vinculades")
+  def __unicode__(self):
+    return '('+self.address.address_type.name+') '+self.relation.gerund+' > '+self.address.name
 
 
 
@@ -387,15 +420,20 @@ class Address(Space):  # Create own ID's
   region = TreeForeignKey('Region', blank=True, null=True, related_name='rel_addresses', verbose_name=_(u"Regió"))
 
   telephone = models.CharField(max_length=20, blank=True, verbose_name=_(u"Telefon fix"))
+  ic_larder = models.BooleanField(default=False, verbose_name=_(u"És Rebost?"))
   size = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, verbose_name=_(u'Tamany'), help_text=_(u"Quantitat d'unitats (accepta 2 decimals)"))
   size_unit = models.ForeignKey('Unit', blank=True, null=True, verbose_name=_(u"Unitat de mesura"))
-  longitude = models.IntegerField(blank=True, null=True, verbose_name=_(u"Logitud (geo)"))
+  longitude = models.IntegerField(blank=True, null=True, verbose_name=_(u"Longitud (geo)"))
   latitude = models.IntegerField(blank=True, null=True, verbose_name=_(u"Latitud (geo)"))
+
+  def _has_contracts(self):
+    pass
+  def _has_licences(self):
+    pass
 
   class Meta:
     verbose_name= _(u'Adreça')
     verbose_name_plural= _(u's- Adreçes')
-
   def __unicode__(self):
     return self.name+' ('+self.p_address+' - '+self.town+')'
 
@@ -460,10 +498,17 @@ class Image(Nonmaterial):
   nonmaterial = models.OneToOneField('Nonmaterial', primary_key=True, parent_link=True)
   file = models.ImageField(upload_to='images', verbose_name=_(u"Imatge (jpg/png)"))
   description = models.TextField(blank=True, null=True, verbose_name=_(u"Descripció, peu de foto"))
-
+  class Meta:
+    verbose_name = _(u"Imatge")
+    verbose_name_plural = _(u"o- Imatges")
 
 class Material(Artwork): # Create own ID's
   material_type = TreeForeignKey('Material_Type', blank=True, null=True, verbose_name=_(u"Tipus d'obra física"))
+
+  nonmaterials = models.ManyToManyField('Nonmaterial', through='rel_Material_Nonmaterials', blank=True, null=True, verbose_name=_(u"Inmaterials relacionats"))
+  records = models.ManyToManyField('Record', through='rel_Material_Records', blank=True, null=True, verbose_name=_(u"Registres relacionats"))
+  addresses = models.ManyToManyField('Address', through='rel_Material_Addresses', blank=True, null=True, verbose_name=_(u"Adreçes relacionades"))
+
   class Meta:
     verbose_name = _(u"Obra Material")
     verbose_name_plural = _(u"o- Obres Materials")
@@ -565,6 +610,7 @@ class AccountBank(Record):
   unit = models.ForeignKey('Unit', blank=True, null=True, verbose_name=_(u"Unitat (moneda)"))
   code = models.CharField(max_length=11, blank=True, null=True, verbose_name=_(u"Codi SWIFT/BIC"))
   number = models.CharField(max_length=34, blank=True, null=True, verbose_name=_(u"Número de Compte IBAN"))
+  bankcard = models.BooleanField(default=False, verbose_name=_(u"Amb Tarjeta?"))
 
   class Meta:
     verbose_name= _(u'Compte Bancari')

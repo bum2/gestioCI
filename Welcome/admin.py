@@ -9,6 +9,7 @@ from mptt.fields import TreeForeignKey, TreeManyToManyField
 #from mptt.forms import MPTTAdminForm, TreeNodeChoiceField
 
 from Welcome.models import *
+from General.models import Image
 
 class MembershipAdmin(admin.ModelAdmin):
   list_display = ['name', 'human', 'ic_CESnum', 'ic_project', '_join_fee_payed']
@@ -43,3 +44,4 @@ admin.site.register(iC_Licence)
 admin.site.register(Fee)
 admin.site.register(Learn_Session)
 admin.site.register(Project_Accompaniment)
+admin.site.register(Image)

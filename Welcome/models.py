@@ -29,6 +29,7 @@ class iC_Record(Record):  # create own ID's
 class iC_Membership(iC_Record):
   ic_record = models.OneToOneField('iC_Record', primary_key=True, parent_link=True)
   human = models.ForeignKey('General.Human', verbose_name=_(u"Ens Soci"))
+  #membership_type = models.ForeignKey('iC_Membership_Type', blank=True, null=True, verbose_name=_(u"Tipus de Soci"))
   ic_project = TreeForeignKey('General.Project', related_name='memberships', verbose_name=_(u"Cooperativa Integral"))
   contribution = TreeForeignKey('General.Relation', blank=True, null=True, verbose_name=_(u"Tipus de contribució"))
   join_date = models.DateField(blank=True, null=True, verbose_name=_(u"Data d'Alta"))
@@ -54,7 +55,7 @@ class iC_Membership(iC_Record):
   _join_fee_payed = False
   joinfee_payed = property(_join_fee_payed)
 
-
+#class iC_Membership_Type()
 
 class iC_Self_Employed(iC_Record):
   ic_record = models.OneToOneField('iC_Record', primary_key=True, parent_link=True)
@@ -71,14 +72,14 @@ class iC_Self_Employed(iC_Record):
   req_address_contract = models.SmallIntegerField(default=0, verbose_name=_(u"Requereix contractes (lloguer, cessió, etc)?"))
   req_insurance = models.SmallIntegerField(default=0, verbose_name=_(u"Requereix assegurances?"))
   req_licence = models.SmallIntegerField(default=0, verbose_name=_(u"Requereix llicències?"))
+  req_images = models.SmallIntegerField(default=0, verbose_name=_(u"Requereix fotos?"))
   rel_accountBank = models.ForeignKey('General.AccountBank', blank=True, null=True, verbose_name=_(u"Compte bancari CI associat"))
 
-  images = models.ManyToManyField('General.Image', blank=True, null=True, verbose_name=_(u"Imatges"))
 
   #socialcoin_session = models.BooleanField(default=False, verbose_name=_(u"Assistencia sessió moneda social?"))
 
   assigned_vat = models.DecimalField(max_digits=4, decimal_places=2, default=18, verbose_name=_(u"IVA assignat"))
-  review_vat = models.BooleanField(default=0, verbose_name=_(u"IVA en revisió?"))
+  review_vat = models.BooleanField(default=False, verbose_name=_(u"IVA en revisió?"))
 
   mentor_membership = models.ForeignKey('iC_Membership', related_name='mentor_of_SE', blank=True, null=True, verbose_name=_(u"Soci Mentor"))
   mentor_comment = models.TextField(blank=True, null=True, verbose_name=_(u"Comentaris soci mentor"))
@@ -142,6 +143,7 @@ class Project_Accompaniment(iC_Record):
   petitioner = models.ForeignKey('General.Human', related_name='petitions', blank=True, null=True, verbose_name=_(u"Peticionari"))
   petition = models.TextField(blank=True, verbose_name=_(u"Comentari petició"))
   facilitator = models.ForeignKey('General.Person', related_name='facilitate_projects', blank=True, null=True, verbose_name=_(u"Facilitador"))
+
   class Meta:
     verbose_name = _(u"Expedient Projecte Productiu")
     verbose_name_plural = _(u"r- Expedients P.Productius")
@@ -157,7 +159,18 @@ class Fee(iC_Record):
   deadline_date = models.DateField(blank=True, null=True, verbose_name=_(u"Data de venciment"))
   payment_date = models.DateField(blank=True, null=True, verbose_name=_(u"Data de pagament"))
   membership = models.ForeignKey('iC_Membership', related_name='fees', blank=True, null=True, verbose_name=_(u"Registre de Soci"))
-  accountCes = models.ForeignKey('General.AccountCes', blank=True, null=True, verbose_name=_(u"Compte CES relacionat"))
+  rel_account = models.ForeignKey('General.Record', related_name='rel_fees', blank=True, null=True, verbose_name=_(u"Compte relacionat"))
+
+  #accountCes = models.ForeignKey('General.AccountCes', blank=True, null=True, verbose_name=_(u"Compte CES relacionat"))
+  PayType = (
+    ('MS', _(u"en Moneda Social")),
+    ('TR', _(u"per Transferència bancària")),
+    ('MT', _(u"en Metàl·lic")),
+    ('IB', _(u"fent Ingrés al banc")),
+    ('CR', _(u"en Criptomoneda")),
+    ('HR', _(u"en Hores de Treball"))
+  )
+  payment_type = models.CharField(max_length=2, blank=True, choices=PayType, verbose_name=_(u"Forma de pagament"))
 
   def __unicode__(self):
     return self.record_type.name+': '+self.human.__unicode__()+' ('+str(self.amount)+' '+self.unit.code+') > '+self.entity.nickname
@@ -166,12 +179,13 @@ class Fee(iC_Record):
     verbose_name = _(u"Quota")
     verbose_name_plural = _(u"r- Quotes")
 
-  def is_payed(self):
+  def _is_payed(self):
     if self.payment_date is None or self.payment_date == '':
       return False
     else:
       return True
-  payed = property(is_payed)
+  _is_payed.boolean = False
+  payed = property(_is_payed)
 
 
 
@@ -209,7 +223,8 @@ class iC_Address_Contract(iC_Document):
   membership = models.ForeignKey('iC_Membership', verbose_name=_(u"Soci (registre)"))
   company = models.ForeignKey('General.Company', verbose_name=_(u"Empresa titular (CI)"))
   address = models.ForeignKey('General.Address', verbose_name=_(u"Adreça contractada"))
-  price = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, verbose_name=_(u"Import (euros)"))
+  price = models.DecimalField(max_digits=13, decimal_places=2, blank=True, null=True, verbose_name=_(u"Import"))
+  price_unit = models.ForeignKey('General.Unit', blank=True, null=True, verbose_name=_(u"Unitat"))
   start_date = models.DateField(blank=True, null=True, verbose_name=_(u"Data d'inici del contracte"))
   end_date = models.DateField(blank=True, null=True, verbose_name=_(u"Data de final del contracte"))
 
@@ -226,7 +241,8 @@ class iC_Insurance(iC_Document):
   membership = models.ForeignKey('iC_Membership', verbose_name=_(u"Soci (registre)"))
   company = models.ForeignKey('General.Company', verbose_name=_(u"Empresa asseguradora"))
   number = models.CharField(max_length=30, blank=True, null=True, verbose_name=_(u"Número de Pòlissa"))
-  price = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True, verbose_name=_(u"Import (euros)"))
+  price = models.DecimalField(max_digits=13, decimal_places=2, blank=True, null=True, verbose_name=_(u"Import"))
+  price_unit = models.ForeignKey('General.Unit', blank=True, null=True, verbose_name=_(u"Unitat"))
   start_date = models.DateField(blank=True, null=True, verbose_name=_(u"Data d'inici de l'assegurança"))
   end_date = models.DateField(blank=True, null=True, verbose_name=_(u"Data de final de l'assegurança"))
   rel_address = models.ForeignKey('General.Address', blank=True, null=True, verbose_name=_(u"Adreça assegurada"))
