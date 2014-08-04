@@ -337,6 +337,7 @@ class rel_Material_Addresses(models.Model):
 
 
 
+
 # A R T S - (Verbs, Relacions, Arts, Oficis, Sectors...)
 
 class Art(MPTTModel):  # Create own ID's (TREE)
@@ -524,7 +525,7 @@ class Asset(Material):
   human = models.ForeignKey('Human', verbose_name=_(u"Entitat"))
   description = models.TextField(blank=True, verbose_name=_(u"Descripció"))
   reciprocity = models.TextField(blank=True, verbose_name=_(u"Reciprocitat"))
-  address = models.ForeignKey('Address', blank=True, null=True, verbose_name=_(u"Adreça"))
+  #address = models.ForeignKey('Address', blank=True, null=True, verbose_name=_(u"Adreça"))
   class Meta:
     verbose_name = _(u"Actiu")
     verbose_name_plural = _(u"o- Actius")
