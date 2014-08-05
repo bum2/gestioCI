@@ -26,7 +26,46 @@ from django.utils.encoding import smart_unicode, force_unicode
 from django.utils.safestring import mark_safe
 from django.utils.html import escape, conditional_escape
 
-class addressInline(admin.StackedInline):
+
+class M_nonmaterialInline(admin.StackedInline):
+  model = rel_Material_Nonmaterials
+  extra = 0
+  fk_name = 'material'
+  raw_id_fields = ('nonmaterial',)
+  fieldsets = (
+    (' ', {
+      'classes': ('collapse',),
+      'fields': (('nonmaterial', 'relation'),)
+    }),
+  )
+
+class M_recordInline(admin.StackedInline):
+  model = rel_Material_Records
+  extra = 0
+  fk_name = 'material'
+  raw_id_fields = ('record',)
+  fieldsets = (
+    (' ', {
+      'classes': ('collapse',),
+      'fields': (('record', 'relation'),)
+    }),
+  )
+
+class M_addressInline(admin.StackedInline):
+  model = rel_Material_Addresses
+  extra = 0
+  fk_name = 'material'
+  raw_id_fields = ('address',)
+  fieldsets = (
+    (' ', {
+      'classes': ('collapse',),
+      'fields': (('address', 'relation'),)
+    }),
+  )
+
+
+
+class H_addressInline(admin.StackedInline):
     model = rel_Human_Addresses
     extra = 0
     fieldsets = (
@@ -36,7 +75,7 @@ class addressInline(admin.StackedInline):
       }),
     )
 
-class jobInline(admin.StackedInline):
+class H_jobInline(admin.StackedInline):
     model = rel_Human_Jobs
     extra = 0
     fieldsets = (
@@ -46,7 +85,7 @@ class jobInline(admin.StackedInline):
       }),
     )
 
-class recordInline(admin.StackedInline):
+class H_recordInline(admin.StackedInline):
     model = rel_Human_Records
     extra = 0
     fieldsets = (
@@ -56,7 +95,7 @@ class recordInline(admin.StackedInline):
       }),
     )
 
-class regionInline(admin.StackedInline):
+class H_regionInline(admin.StackedInline):
     model = rel_Human_Regions
     extra = 0
     fieldsets = (
@@ -66,7 +105,7 @@ class regionInline(admin.StackedInline):
       }),
     )
 
-class materialInline(admin.StackedInline):
+class H_materialInline(admin.StackedInline):
     model = rel_Human_Materials
     extra = 0
     fieldsets = (
@@ -76,7 +115,7 @@ class materialInline(admin.StackedInline):
       }),
     )
 
-class nonmaterialInline(admin.StackedInline):
+class H_nonmaterialInline(admin.StackedInline):
     model = rel_Human_Nonmaterials
     extra = 0
     fieldsets = (
@@ -86,7 +125,7 @@ class nonmaterialInline(admin.StackedInline):
       }),
     )
 
-class personInline(admin.StackedInline):
+class H_personInline(admin.StackedInline):
     model = rel_Human_Persons
     fk_name = 'human'
     extra = 0
@@ -98,7 +137,7 @@ class personInline(admin.StackedInline):
       }),
     )
 
-class projectInline(admin.StackedInline):
+class H_projectInline(admin.StackedInline):
     model = rel_Human_Projects
     fk_name = 'human'
     extra = 0
@@ -110,7 +149,7 @@ class projectInline(admin.StackedInline):
       }),
     )
 
-class companyInline(admin.StackedInline):
+class H_companyInline(admin.StackedInline):
     model = rel_Human_Companies
     fk_name = 'human'
     extra = 0
@@ -122,7 +161,7 @@ class companyInline(admin.StackedInline):
       }),
     )
 
-class accountCesInline(admin.StackedInline):
+class H_accountCesInline(admin.StackedInline):
   model = AccountCes
   extra = 0
   fk_name = 'human'
@@ -135,7 +174,7 @@ class accountCesInline(admin.StackedInline):
     }),
   )
 
-class accountBankInline(admin.StackedInline):
+class H_accountBankInline(admin.StackedInline):
   model = AccountBank
   extra = 0
   fk_name = 'human'
@@ -148,7 +187,7 @@ class accountBankInline(admin.StackedInline):
     }),
   )
 
-class accountCryptoInline(admin.StackedInline):
+class H_accountCryptoInline(admin.StackedInline):
   model = AccountCrypto
   extra = 0
   fk_name = 'human'
@@ -161,7 +200,7 @@ class accountCryptoInline(admin.StackedInline):
     }),
   )
 
-class assetInline(admin.StackedInline):
+class H_assetInline(admin.StackedInline):
   model = Asset
   extra = 0
   fk_name = 'human'
@@ -169,10 +208,13 @@ class assetInline(admin.StackedInline):
     (' ', {
       'classes': ('collapse',),
       'fields': (
-        ('name', 'material_type', 'description', 'reciprocity', 'address'),
+        ('name', 'material_type', 'description', 'reciprocity'),
       )
     }),
   )
+  inlines = [
+    M_addressInline,
+  ]
 
 
 
@@ -191,8 +233,8 @@ class ProjectAdmin(MPTTModelAdmin): # admin.ModelAdmin):
   search_fields = ('name', 'nickname', 'project_type')
 
   def ref_persons(self, obj):
-    return obj.project.get_ref_persons
-  ref_persons.admin_order_field = 'project__get_ref_persons'
+    return obj.project._get_ref_persons
+  ref_persons.admin_order_field = 'project___get_ref_persons'
   #ref_persons.list = []
   #ref_persons.allow_tags = True
 
@@ -225,28 +267,24 @@ class ProjectAdmin(MPTTModelAdmin): # admin.ModelAdmin):
   #filter_horizontal = ('accounts',) # 'arts',) # 'addresses',)
 
   inlines = [
-    addressInline,
-    jobInline,
+    H_addressInline,
+    H_jobInline,
 
-    accountCesInline,
-    accountBankInline,
-    accountCryptoInline,
+    H_accountCesInline,
+    H_accountBankInline,
+    H_accountCryptoInline,
 
-    personInline,
-    projectInline,
-    companyInline,
+    H_personInline,
+    H_projectInline,
+    H_companyInline,
 
-    assetInline,
-    #regionInline,
-    materialInline,
-    nonmaterialInline,
-    recordInline,
+    H_assetInline,
+    #H_regionInline,
+    H_materialInline,
+    H_nonmaterialInline,
+    H_recordInline,
   ]
 
-  #def is_collective(self, profile):
-  #  return profile.project.is_collective
-  #collective = admin_field('project__is_collective')
-  #collective.admin_field = 'project__is_collective'
 
 
 class PersonAdmin(admin.ModelAdmin):
@@ -273,21 +311,21 @@ class PersonAdmin(admin.ModelAdmin):
   )
   #filter_horizontal = ('arts',)# 'projects',) # 'addresses',)
   inlines = [
-    addressInline,
-    jobInline,
+    H_addressInline,
+    H_jobInline,
 
-    accountCesInline,
-    accountBankInline,
-    accountCryptoInline,
+    H_accountCesInline,
+    H_accountBankInline,
+    H_accountCryptoInline,
 
-    #personInline,
-    projectInline,
-    companyInline,
+    #H_personInline,
+    H_projectInline,
+    H_companyInline,
 
-    regionInline,
-    materialInline,
-    nonmaterialInline,
-    recordInline,
+    H_regionInline,
+    H_materialInline,
+    H_nonmaterialInline,
+    H_recordInline,
   ]
 
 
@@ -319,21 +357,21 @@ class CompanyAdmin(admin.ModelAdmin): # admin.ModelAdmin):
   )
   #filter_horizontal = ('ref_members',) # 'jobs',) # 'addresses')
   inlines = [
-    addressInline,
-    jobInline,
-    personInline,
+    H_addressInline,
+    H_jobInline,
+    H_personInline,
 
-    accountCesInline,
-    accountBankInline,
-    accountCryptoInline,
+    H_accountCesInline,
+    H_accountBankInline,
+    H_accountCryptoInline,
 
-    #projectInline,
-    #companyInline,
+    #H_projectInline,
+    #H_companyInline,
 
-    materialInline,
-    nonmaterialInline,
-    regionInline,
-    recordInline,
+    H_materialInline,
+    H_nonmaterialInline,
+    H_regionInline,
+    H_recordInline,
   ]
 
 '''

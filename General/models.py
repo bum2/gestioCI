@@ -169,13 +169,13 @@ class Project(MPTTModel, Human):
   collective = property(_is_collective)
 
   ecommerce = models.BooleanField(default=False, verbose_name=_(u"Comerç electrònic?"))
-  def get_ref_persons(self):
+  def _get_ref_persons(self):
     return rel_Human_Persons.filter(
       person__pk = self.human.pk,
       relation__clas = 'referent'
     )
-  #get_ref_persons.list = ()
-  ref_persons = property(get_ref_persons)
+  _get_ref_persons.list = True
+  ref_persons = property(_get_ref_persons)
 
   #def _is_larder(self):
 
@@ -305,6 +305,7 @@ class rel_Human_Companies(models.Model):
   def __unicode__(self):
     return '('+self.company.company_type.being_type.name+') '+self.relation.gerund+' > '+self.company.name
 
+
 class rel_Material_Nonmaterials(models.Model):
   material = models.ForeignKey('Material')
   nonmaterial = models.ForeignKey('Nonmaterial', verbose_name=_(u"Inmaterial vinculat"))
@@ -386,8 +387,6 @@ class Job(Art):
 
 
 
-
-
 # S P A C E S - (Regions, Espais, Adreçes...)
 
 class Space(models.Model):  # Abstact
@@ -422,6 +421,7 @@ class Address(Space):  # Create own ID's
 
   telephone = models.CharField(max_length=20, blank=True, verbose_name=_(u"Telefon fix"))
   ic_larder = models.BooleanField(default=False, verbose_name=_(u"És Rebost?"))
+  main_address = models.BooleanField(default=False, verbose_name=_(u"Adreça principal?"))
   size = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True, verbose_name=_(u'Tamany'), help_text=_(u"Quantitat d'unitats (accepta 2 decimals)"))
   size_unit = models.ForeignKey('Unit', blank=True, null=True, verbose_name=_(u"Unitat de mesura"))
   longitude = models.IntegerField(blank=True, null=True, verbose_name=_(u"Longitud (geo)"))
@@ -539,7 +539,10 @@ class Record(Artwork):  # Create own ID's
     verbose_name= _(u'Registre')
     verbose_name_plural= _(u'o- Registres')
   def __unicode__(self):
-    return self.record_type.name+': '+self.name
+    if self.record_type is None or self.record_type == '':
+      return self.name
+    else:
+      return self.record_type.name+': '+self.name
 
 class Record_Type(Artwork_Type):
   artwork_type = models.OneToOneField('Artwork_Type', primary_key=True, parent_link=True)

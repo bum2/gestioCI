@@ -27,6 +27,28 @@ class MembershipAdmin(admin.ModelAdmin):
     #})
   )
 
+class SelfEmployedAdmin(MembershipAdmin):
+  list_display = ['name', 'membership__human', 'ic_CESnum', 'join_date', '_join_fee_payed']
+
+  fieldsets = MembershipAdmin.fieldsets + (
+    (_(u"fase 1: Autoocupat"), {
+      'fields': (
+        ('membership', 'join_date', 'end_date'),
+        ('rel_fees', 'organic')
+      )
+    }),
+    (_(u"fase 2: Llista de tasques"), {
+      'fields': (('req_id_cards', 'req_address_contract', 'req_insurance', 'req_licence', 'req_images'))
+    }),
+    (_(u"fase 3: Alta"), {
+      'fields': (
+        ('assigned_vat', 'review_vat', 'last_review_date'),
+        ('rel_accountBank', 'mentor_membership','mentor_comment'))
+    }),
+  )
+  #list_display = ['name']
+
+
 # Register your models here.
 
 admin.site.register(iC_Record) # es pot comentar
@@ -45,3 +67,5 @@ admin.site.register(Fee)
 admin.site.register(Learn_Session)
 admin.site.register(Project_Accompaniment)
 admin.site.register(Image)
+
+admin.site.register(Payment_Mode, MPTTModelAdmin)
