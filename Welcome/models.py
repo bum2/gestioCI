@@ -164,16 +164,6 @@ class Fee(iC_Record):
   rel_account = models.ForeignKey('General.Record', related_name='rel_fees', blank=True, null=True, verbose_name=_(u"Compte relacionat"))
 
   #accountCes = models.ForeignKey('General.AccountCes', blank=True, null=True, verbose_name=_(u"Compte CES relacionat"))
-  '''
-  PayType = (
-    ('MS', _(u"en Moneda Social")),
-    ('TR', _(u"per Transferència bancària")),
-    ('MT', _(u"en Metàl·lic")),
-    ('IB', _(u"fent Ingrés al banc")),
-    ('CR', _(u"en Criptomoneda")),
-    ('HR', _(u"en Hores de Treball"))
-  )'''
-  #payment_type = models.CharField(max_length=2, blank=True, choices=PayType, verbose_name=_(u"Forma de pagament"))
   payment_type = models.ForeignKey('Payment_Mode', blank=True, null=True, verbose_name=_(u"Forma de pagament"))
 
   def __unicode__(self):

@@ -27,10 +27,10 @@ class MembershipAdmin(admin.ModelAdmin):
     #})
   )
 
-class SelfEmployedAdmin(MembershipAdmin):
-  list_display = ['name', 'membership__human', 'ic_CESnum', 'join_date', '_join_fee_payed']
+class SelfEmployedAdmin(admin.ModelAdmin):
+  #list_display = ['name', 'membership__human', 'ic_CESnum', 'join_date', '_join_fee_payed']
 
-  fieldsets = MembershipAdmin.fieldsets + (
+  fieldsets = (#MembershipAdmin.fieldsets + (
     (_(u"fase 1: Autoocupat"), {
       'fields': (
         ('membership', 'join_date', 'end_date'),
@@ -53,7 +53,7 @@ class SelfEmployedAdmin(MembershipAdmin):
 
 admin.site.register(iC_Record) # es pot comentar
 admin.site.register(iC_Membership, MembershipAdmin)
-admin.site.register(iC_Self_Employed)
+admin.site.register(iC_Self_Employed, SelfEmployedAdmin)
 admin.site.register(iC_Stallholder)
 
 #admin.site.register(iC_Document)

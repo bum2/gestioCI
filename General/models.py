@@ -104,6 +104,7 @@ class Human(Being):  # Create own ID's
   class Meta:
     verbose_name = _(u"Humà")
     verbose_name_plural = _(u"e- Humans")
+
   def __unicode__(self):
     if self.nickname is None or self.nickname == '':
       return self.name
@@ -466,7 +467,7 @@ class Region_Type(Space_Type):
 # A R T W O R K S - (Obres, Coses, Registres, Documents...)
 
 class Artwork(models.Model):  # Abstract
-  name = models.CharField(verbose_name=_(u"Nom"), max_length=200, help_text=_(u"El nom de la obra (Registre, Unitat, Cosa)"))
+  name = models.CharField(verbose_name=_(u"Nom"), max_length=200, blank=True, null=True, help_text=_(u"El nom de la obra (Registre, Unitat, Cosa)"))
   #artwork_type = TreeForeignKey('Artwork_Type', blank=True, verbose_name=_(u"Tipus d'Obra"))
 
   def __unicode__(self):
@@ -593,8 +594,8 @@ class AccountCes(Record):
   record = models.OneToOneField('Record', primary_key=True, parent_link=True)
 
   human = models.ForeignKey('Human', related_name='accountsCes', verbose_name=_(u"Entitat humana persuaria"))
-  entity = models.ForeignKey('Project', blank=True, null=True, verbose_name=_(u"Xarxa del compte"))
-  unit = models.ForeignKey('Unit', blank=True, null=True, verbose_name=_(u"Unitat (moneda)"))
+  entity = models.ForeignKey('Project', verbose_name=_(u"Xarxa del compte"))
+  unit = models.ForeignKey('Unit', verbose_name=_(u"Unitat (moneda)"))
   code = models.CharField(max_length=10, blank=True, null=True, verbose_name=_(u"Codi ecoxarxa"))
   number = models.CharField(max_length=4, blank=True, null=True, verbose_name=_(u"Número compte"))
 
@@ -603,7 +604,7 @@ class AccountCes(Record):
     verbose_name_plural= _(u'o- Comptes CES')
 
   def __unicode__(self):
-    return self.name+'  ('+self.human.__unicode__()+')'
+    return self.unit.name+': '+self.human.__unicode__()+' '+self.code+self.number+' '+self.name
 
 
 class AccountBank(Record):
@@ -621,7 +622,7 @@ class AccountBank(Record):
     verbose_name_plural= _(u'o- Comptes Bancaris')
 
   def __unicode__(self):
-    return self.name+'  ('+self.human.__unicode__()+')'
+    return '('+self.unit.name+') '+self.human.__unicode__()+' '+self.number+' ('+self.company.nickname+')'
 
 
 class AccountCrypto(Record):
@@ -633,4 +634,4 @@ class AccountCrypto(Record):
     verbose_name = _(u"Compte Criptomoneda")
     verbose_name_plural = _(u"o- Comptes Criptomonedes")
   def __unicode__(self):
-    return self.name+' ('+self.human.__unicode__()+')'
+    return self.unit.name+': '+self.human.__unicode__()+' '+self.number # +' '+self.name

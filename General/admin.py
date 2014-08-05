@@ -1,5 +1,5 @@
 #encoding=utf-8
-
+from django import forms
 from django.contrib import admin
 from django.forms.extras import widgets
 
@@ -51,7 +51,7 @@ class M_recordInline(admin.StackedInline):
     }),
   )
 
-class M_addressInline(admin.StackedInline):
+class M_addressInline(admin.TabularInline):
   model = rel_Material_Addresses
   extra = 0
   fk_name = 'material'
@@ -173,6 +173,10 @@ class H_accountCesInline(admin.StackedInline):
       )
     }),
   )
+  def save_model(self, request, obj, form, change):
+    print 'JELOW' #obj.__unicode__
+    obj.name = obj.__unicode__()
+    obj.save()
 
 class H_accountBankInline(admin.StackedInline):
   model = AccountBank
@@ -380,6 +384,29 @@ class HumanAdmin(admin.ModelAdmin):
   search_fields = ('name','nickname','email',)
 '''
 
+
+class accountForm(forms.ModelForm):
+  model = AccountCes
+  def clean_name(self):
+    print 'HOLA'
+    #return self.unicode
+  def clean(self):
+    if self.instance.name == '' or self.instance.name is None:
+      #self.instance.name = self.instance.__unicode__()
+      self.cleaned_data['name'] = self.instance.__unicode__()
+      print 'Jola '+self.instance.name
+
+
+class AccountCesAdmin(admin.ModelAdmin):
+  list_display = ['name', 'entity', 'code', 'number', 'unit']
+
+  #form = accountForm
+  def save_model(self, request, obj, form, change):
+    print obj.__unicode__
+    obj.name = obj.__unicode__()
+    obj.save()
+
+
 # Register your models here.
 
 #admin.site.register(Tree)
@@ -417,7 +444,7 @@ admin.site.register(Asset)
 
 admin.site.register(Record)
 admin.site.register(Record_Type, MPTTModelAdmin)
-admin.site.register(AccountCes)
+admin.site.register(AccountCes, AccountCesAdmin)
 admin.site.register(AccountBank)
 admin.site.register(AccountCrypto)
 
